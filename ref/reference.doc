@@ -1,6 +1,6 @@
-Thanks to:
+<b>Thanks to:</b>
 ++++++++++
 
-https://learning-0mq-with-pyzmq.readthedocs.org/en/latest/pyzmq/multisocket/zmqpoller.html
+<a href="https://learning-0mq-with-pyzmq.readthedocs.org/en/latest/pyzmq/multisocket/zmqpoller.html">Do Poll</a>
 
 https://github.com/taotetek/blog_examples/blob/master/python_multiprocessing_with_zeromq/workqueue_example.py
