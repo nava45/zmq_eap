@@ -5,4 +5,6 @@ publisher_port = 5678
 publisher_address = "127.0.0.1"
 
 total_workers = 10
+TOT_JOBS = 10
+
 log_file_path = "app_logger.log"
