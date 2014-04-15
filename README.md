@@ -1,7 +1,7 @@
 zmq_eap
 =======
 
-A Sample Enterprise App using zero mq python
+A Sample Enterprise App using zeromq in python
 
 <b>executing plan:</b>
 
@@ -12,14 +12,14 @@ A Sample Enterprise App using zero mq python
 
 <b>controller:</b>
 
-   It is the intermidiate step between producer and user command
+   It is the application launcher
    
-   It pushed the command to master
+   It pushes the user command to master
 
 <b>master:</b>
 
-   It get the command from controller, also it always listen to the master
+   It gets the command from controller, also it always listen to the controller
    
-   It launches several workers and sending the task to all the worker parallely.
+   It launches several workers in distributed way and distributing the tasks to all the worker.
 
    
