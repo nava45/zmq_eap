@@ -27,7 +27,7 @@ from settings import *
 def worker(pid):
     
     work_receiver = create_connection("PULL", WORKER_IP, WORKER_PORT, "connect")
-    result_sender = create_connection("PUSH", RESULT_SENDER_IP, RESULT_SENDER_PORT, "bind")
+    result_sender = create_connection("PUSH", RESULT_SENDER_IP, RESULT_SENDER_PORT, "connect")
     result_status_receiver = create_connection("SUB", RESULT_COLLECTOR_IP, RESULT_COLLECTOR_PORT, "connect")
 
     poller = zmq.Poller()
