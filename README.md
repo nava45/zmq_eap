@@ -5,9 +5,17 @@ A Sample Enterprise App using zeromq in python
 
 <b>executing plan:</b>
 
-<i>python controller.py start</i> (To start the computing in distributed way)
+step1:
 
-<i>python controller.py stop</i> (stop all executing items)
+    run it in one terminal:
+    
+     <i>python master_updated.py</i>
+
+    run it in another terminal:
+    
+     <i>python controller.py start</i> (To start the computing in distributed way)
+
+     <i>python controller.py stop</i> (stop all executing items)
 
 
 <b>controller:</b>
