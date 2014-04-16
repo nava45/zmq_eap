@@ -32,10 +32,13 @@ def start_controller(job_type):
                  'task_id' : num,
                  'job_type': job_type,
                  'num': num,
+                 'quit':False,
                  }
+        task = {'num' : num}
         controller_send.send_json(task)
 
     time.sleep(1)
+    print NUM_JOBS
     log.info('sent task.')
 
 

@@ -26,9 +26,9 @@ from settings import *
 
 def worker(pid):
     
-    work_receiver = create_connection("PULL", WORKER_IP, WORKER_PORT, "connect")
-    result_sender = create_connection("PUSH", RESULT_SENDER_IP, RESULT_SENDER_PORT, "connect")
-    result_status_receiver = create_connection("SUB", RESULT_COLLECTOR_IP, RESULT_COLLECTOR_PORT, "connect")
+    work_receiver = create_connection("PULL", CONTROLLER_IP, CONTROLLER_PORT, "connect")
+    results_sender = create_connection("PUSH", RESULT_SENDER_IP, RESULT_SENDER_PORT, "connect")
+    result_status_receiver = create_connection("SUB", RESULT_COLLECTOR_IP, RESULT_COLLECTOR_PORT, "connect", topic_filter="")
 
     poller = zmq.Poller()
     poller.register(work_receiver, zmq.POLLIN)
@@ -39,9 +39,9 @@ def worker(pid):
         
         if socks.get(work_receiver) == zmq.POLLIN:
             work_message = work_receiver.recv_json()
-
-            if work_message.get('quit'):
-                break
+            print "message",work_message
+            #if work_message.get('quit',0):
+            #    break
             
             product = work_message['num'] * work_message['num']
             answer_message = { 'worker' : pid, 'result' : product }
@@ -56,7 +56,7 @@ def worker(pid):
 
 
 def result_manager():
-    results_receiver = create_connection("PULL", RESULT_SENDER_IP, RESULT_SENDER_PORT, "connect")
+    results_receiver = create_connection("PULL", RESULT_SENDER_IP, RESULT_SENDER_PORT, "bind")
     result_status_sender = create_connection("PUB", RESULT_COLLECTOR_IP, RESULT_COLLECTOR_PORT, "bind")
 
     for task_nbr in range(NUM_JOBS):
@@ -71,11 +71,11 @@ if __name__ == '__main__':
     
     worker_pool = range(NUM_WORKERS)
 
-    for i in range(10):
-        worker(i)
+    #for i in range(10):
+    #    worker(i)
     #Worker process
-    #for worker_id in range(NUM_WORKERS):
-    #    Process(target=worker, args=(worker_id,)).start()
+    for worker_id in range(10):
+        Process(target=worker, args=(worker_id,)).start()
 
     #result collector
     result_manager = Process(target=result_manager, args=())

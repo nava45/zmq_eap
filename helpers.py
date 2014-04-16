@@ -46,9 +46,6 @@ def create_connection(sock_type, address, port, \
     if sock_type == 'SUB':
         ws.setsockopt(zmq.SUBSCRIBE, topic_filter)
 
-    print "ws for ",sock_type, address, port, \
-                          connection_method, \
-                          topic_filter
     return ws
    
 
