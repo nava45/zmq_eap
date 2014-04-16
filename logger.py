@@ -1,10 +1,10 @@
 import logging
-from settings import *
+from settings import LOG_FILE
 
 def configure_logger():
     lgr = logging.getLogger('myzmq')
     lgr.setLevel(logging.DEBUG)
-    fh = logging.FileHandler('%s' %log_file_path)
+    fh = logging.FileHandler('%s' %LOG_FILE)
     fh.setLevel(logging.DEBUG)
     frmt = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     fh.setFormatter(frmt)

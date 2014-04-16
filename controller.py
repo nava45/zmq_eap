@@ -11,25 +11,20 @@ import logging
 
 from multiprocessing import Process
 from optparse import OptionParser
+from helpers import create_connection
 from settings import *
 
 log = logging.getLogger()
 
-controller_port = 5557
-
-
-def connect():
-    cctx = zmq.Context()
-    csock = cctx.socket(zmq.PUSH)
-    csock.bind('tcp://%s:%s' %(controller_address, controller_port))
-    return csock
-
 
 def start_controller(job_type):
-    controller_send = connect()
+    controller_send = create_connection("PUSH", \
+                                            CONTROLLER_IP, \
+                                            CONTROLLER_PORT, \
+                                            "bind")
     time.sleep(1)
     
-    for num in range(TOT_JOBS):
+    for num in range(NUM_JOBS):
         task = { 'task':'send_email',
                  'payload':{'sender':'',
                             'recipient':['navaneethanit@gmail.com']
