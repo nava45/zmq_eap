@@ -11,7 +11,7 @@ import logging
 
 from multiprocessing import Process
 from optparse import OptionParser
-from helpers import create_connection
+from lib.helpers import create_connection
 from settings import *
 
 log = logging.getLogger()
@@ -32,13 +32,12 @@ def start_controller(job_type):
                  'task_id' : num,
                  'job_type': job_type,
                  'num': num,
-                 'quit':False,
+                 'quit':False if job_type=='start' else True,
                  }
-        task = {'num' : num}
+
         controller_send.send_json(task)
 
     time.sleep(1)
-    print NUM_JOBS
     log.info('sent task.')
 
 

@@ -10,10 +10,12 @@ via communication bus.
 
 
 from multiprocessing import Process
-from helpers import stop_everything, \
+from datetime import datetime
+
+from lib.helpers import stop_everything, \
     create_connection
 from controller import start_controller
-from logger import configure_logger
+from lib.logger import configure_logger
 
 import zmq
 import time
@@ -39,13 +41,22 @@ def worker(pid):
         
         if socks.get(work_receiver) == zmq.POLLIN:
             work_message = work_receiver.recv_json()
-            print "message",work_message
-            #if work_message.get('quit',0):
-            #    break
+       
+            if work_message.get('quit',0):
+                print "kill command received from controller..by worker-%s" %pid
+                results_sender.send_json(work_message)
+                results_sender.close()
+                result_status_receiver.close()
+                work_receiver.close()
+                break
+            
             
             product = work_message['num'] * work_message['num']
-            answer_message = { 'worker' : pid, 'result' : product }
-            results_sender.send_json(answer_message)
+            work_message['worker_name'] = pid
+            work_message['result'] = product
+            work_message['finished_at'] = str(datetime.utcnow())
+
+            results_sender.send_json(work_message)
 
         if socks.get(result_status_receiver) == zmq.POLLIN:
             status_message = result_status_receiver.recv()
@@ -61,7 +72,10 @@ def result_manager():
 
     for task_nbr in range(NUM_JOBS):
         result_message = results_receiver.recv_json()
-        print "Worker %i answered: %i" % (result_message['worker'], result_message['result'])
+        if result_message['quit']:
+            result_status_sender.send("Quitting!!")
+        else:
+            print "Worker %i has done the job. =%i" % (result_message['worker_name'], result_message['result'])
 
     result_status_sender.send("DONE")
     time.sleep(5)
@@ -74,7 +88,7 @@ if __name__ == '__main__':
     #for i in range(10):
     #    worker(i)
     #Worker process
-    for worker_id in range(10):
+    for worker_id in worker_pool:
         Process(target=worker, args=(worker_id,)).start()
 
     #result collector

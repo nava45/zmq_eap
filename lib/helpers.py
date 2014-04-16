@@ -4,7 +4,7 @@ import multiprocessing
 import logging
 
 from settings import *
-from logger import configure_logger
+from lib.logger import configure_logger
 
 
 #log = logging.getLogger('myzmq')
