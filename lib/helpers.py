@@ -49,6 +49,15 @@ def create_connection(sock_type, address, port, \
     return ws
    
 
+def get_obj_from_str(func_name):
+    """
+    Converts python object from the given string in functions module in mod directory.
+    """
+
+    pass
+
+
+
 #Obsolete 
 """
 def launch_subscribers(ip_addr, master_port, event_sign=None, topic=''):

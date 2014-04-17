@@ -13,7 +13,7 @@ from multiprocessing import Process
 from datetime import datetime
 
 from lib.helpers import stop_everything, \
-    create_connection
+    create_connection, get_obj_from_str
 from controller import start_controller
 from lib.logger import configure_logger
 
@@ -50,7 +50,9 @@ def worker(pid):
                 work_receiver.close()
                 break
             
-            
+            task_func = get_obj_from_str(work_message['task'])
+            task_func(work_message['payload'])
+
             product = work_message['num'] * work_message['num']
             work_message['worker_name'] = pid
             work_message['result'] = product
