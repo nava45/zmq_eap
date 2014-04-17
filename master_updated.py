@@ -50,8 +50,10 @@ def worker(pid):
                 work_receiver.close()
                 break
             
+            
             task_func = get_obj_from_str(work_message['task'])
-            task_func(work_message['payload'])
+            if task_func:
+                task_func(work_message['payload'])
 
             product = work_message['num'] * work_message['num']
             work_message['worker_name'] = pid

@@ -53,8 +53,12 @@ def get_obj_from_str(func_name):
     """
     Converts python object from the given string in functions module in mod directory.
     """
+    print "func name:",func_name
 
-    pass
+    exec("from %s import %s" %('mod', 'functions'))
+  
+    return getattr(functions, func_name, None)
+
 
 
 
